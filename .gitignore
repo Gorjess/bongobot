@@ -1,0 +1,106 @@
+# Created by 954860224@qq.com
+
+* text=auto eol=lf
+*.bat eol=crlf
+*.ps1 eol=crlf
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv/
+.env/
+
+# IDEs and editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+*.code-workspace
+
+# Logs
+*.log
+log/*
+!log/.gitkeep
+logs/
+
+# Runtime configuration
+config.yaml
+!examples/config.example.yaml
+
+# User-provided template images (encourage users to add their own)
+assets/*.png
+assets/*.jpg
+assets/*.jpeg
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Testing
+.coverage
+.pytest_cache/
+.tox/
+htmlcov/
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+# Windows specific
+*.exe
+*.msi
+*.msm
+*.msp
+

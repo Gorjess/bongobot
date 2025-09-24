@@ -1,0 +1,33 @@
+# 配置文件（支持注释）。
+# 调整建议：
+# - 先保持默认值运行；如识别不稳，适当降低 confidence；
+# - 如你不希望频繁点击，可增加 wait_after_click_seconds。
+
+bot:
+  # 用户连续空闲多久后开始模拟输入（秒）。建议 5~10。
+  idle_threshold_seconds: 5.0
+  # 用于累计计数的键集合。建议选择不会触发全局快捷键的普通字母键。
+  keys: ["a", "s", "d", "w", "q", "e", "space", "j", "k", "l"]
+
+clicker:
+  # 是否启用模板图点击器。
+  enabled: true
+  # 目标模板图路径，相对项目根目录。示例: assets/test_btn.png
+  # template_path: "assets/test_btn.png"
+  template_path: "assets/__test_btn.png"
+  # 模板匹配置信度(0~1)。建议 0.75~0.9；越高越严格。
+  confidence: 0.8
+  # 点击成功后进入的冷却时间（秒）。建议 5~15。
+  wait_after_click_seconds: 8.0
+  # 连续查找的间隔（秒），避免高占用。建议 0.5~2。
+  search_interval_seconds: 1.0
+
+logging:
+  # 日志级别：DEBUG/INFO/WARNING/ERROR
+  level: "INFO"
+  # 是否写入日志文件（默认 false）。仅在调试时建议打开。
+  write_to_file: false
+  # 日志目录（当 write_to_file=true 时生效）
+  dir: "log"
+
+

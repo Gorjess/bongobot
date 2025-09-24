@@ -1,0 +1,98 @@
+# Created by 954860224@qq.com
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "bongobot"
+version = "1.0.0"
+description = "bongobot 闲置模拟器"
+readme = "README.md"
+license = {file = "LICENSE"}
+authors = [
+    {name = "GorjessJin", email = "954860224@qq.com"}
+]
+maintainers = [
+    {name = "GorjessJin", email = "954860224@qq.com"}
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: End Users/Desktop",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: Microsoft :: Windows",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Desktop Environment",
+    "Topic :: System :: Monitoring",
+]
+keywords = ["automation", "idle", "simulation", "keyboard", "mouse", "clicker"]
+requires-python = ">=3.8"
+dependencies = [
+    "pyautogui>=0.9.54",
+    "pydirectinput>=1.0.4",
+    "pywin32>=311",
+    "opencv-python>=4.8.0",
+    "numpy>=1.24.0",
+    "Pillow>=11.0.0",
+    "PyYAML>=6.0.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/Gorjess/bongobot"
+Repository = "https://github.com/Gorjess/bongobot.git"
+Issues = "https://github.com/Gorjess/bongobot/issues"
+Changelog = "https://github.com/Gorjess/bongobot/blob/main/CHANGELOG.md"
+
+[project.scripts]
+bongobot = "bongobot.main:main"
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=6.0",
+    "pytest-cov>=2.0",
+    "black>=22.0",
+    "flake8>=4.0",
+    "mypy>=0.900",
+]
+
+[tool.setuptools]
+packages = ["bongobot"]
+
+[tool.setuptools.package-data]
+"*" = ["*.yaml", "*.yml"]
+"assets" = ["README.md"]
+
+[tool.black]
+line-length = 88
+target-version = ['py38']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # directories
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | build
+  | dist
+  | venv
+)/
+'''
+
+[tool.mypy]
+python_version = "3.8"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
