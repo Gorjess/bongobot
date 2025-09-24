@@ -13,8 +13,7 @@ clicker:
   # 是否启用模板图点击器。
   enabled: true
   # 目标模板图路径，相对项目根目录。示例: assets/test_btn.png
-  # template_path: "assets/test_btn.png"
-  template_path: "assets/__test_btn.png"
+  template_path: "assets/test_btn.png"
   # 模板匹配置信度(0~1)。建议 0.75~0.9；越高越严格。
   confidence: 0.8
   # 点击成功后进入的冷却时间（秒）。建议 5~15。
