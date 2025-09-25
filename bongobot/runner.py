@@ -48,14 +48,14 @@ def is_safe_to_simulate(logger: logging.Logger) -> bool:
 
 def get_real_user_idle_seconds(state: RuntimeState) -> float:
     sys_idle = get_user_idle_seconds()
-    if state.last_simulation_time > 0:
+    if state.is_simulating and state.last_simulation_time > 0:
         since = time.time() - state.last_simulation_time
-        if sys_idle < 2.0 and since < 5.0:
-            return 10.0
+        # 在最近一段时间内是程序产生的输入，避免误判为用户回来了
+        if since < 5.0:
+            return max(sys_idle, 10.0)
     return sys_idle
 
-
-def step_idle_mode(keys: List[str], clicker: Dict[str, Any], state: RuntimeState, logger: logging.Logger) -> None:
+def step_idle_mode(keys: List[str], clicker: Dict[str, Any], cfg_dir: str, state: RuntimeState, logger: logging.Logger) -> None:
     if not is_safe_to_simulate(logger):
         state.is_simulating = False
         time.sleep(2)
@@ -67,7 +67,8 @@ def step_idle_mode(keys: List[str], clicker: Dict[str, Any], state: RuntimeState
     state.last_simulation_time = time.time()
     now_ts = time.time()
     if clicker.get('enabled', True) and now_ts >= state.next_search_time and now_ts >= state.next_allowed_click_time:
-        template_path = os.path.join(os.getcwd(), str(clicker['template_path']))
+        # 基于配置文件所在目录解析相对路径，避免受当前工作目录影响
+        template_path = os.path.join(cfg_dir, str(clicker['template_path']))
         if find_and_click_template(template_path, float(clicker['confidence'])):
             state.next_allowed_click_time = now_ts + float(clicker['wait_after_click_seconds'])
             logger.info(f"点击完成并进入冷却: {float(clicker['wait_after_click_seconds']):.1f}s")
@@ -81,13 +82,14 @@ def step_active_mode(state: RuntimeState, idle_time: float, logger: logging.Logg
     if state.is_simulating:
         logger.warning(f"检测到您已回来操作，暂停模拟。(闲置时间从 {idle_time:.3f}s 变为活动状态)")
         state.is_simulating = False
-    time.sleep(1)
+    time.sleep(0.5)
 
 
 def run_loop(cfg: Dict[str, Any], logger: logging.Logger) -> None:
     threshold = float(cfg['bot']['idle_threshold_seconds'])
     keys = list(cfg['bot']['keys'])
     clicker = cfg['clicker']
+    cfg_dir = str(cfg.get('__config_dir', os.getcwd()))
     pydirectinput.FAILSAFE = False
     pydirectinput.PAUSE = 0.02
     state = RuntimeState()
@@ -96,7 +98,7 @@ def run_loop(cfg: Dict[str, Any], logger: logging.Logger) -> None:
             idle_time = get_real_user_idle_seconds(state)
             logger.debug(f"主循环检查 - 闲置时间: {idle_time:.3f}s, 阈值: {threshold}s, 当前状态: {'模拟中' if state.is_simulating else '等待中'}")
             if idle_time >= threshold:
-                step_idle_mode(keys, clicker, state, logger)
+                step_idle_mode(keys, clicker, cfg_dir, state, logger)
             else:
                 step_active_mode(state, idle_time, logger)
     except KeyboardInterrupt:
