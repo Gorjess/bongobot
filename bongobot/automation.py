@@ -14,11 +14,14 @@ logger = logging.getLogger('gamebot')
 
 
 def simulate_keypress(keys: List[str]) -> None:
-    key = random.choice(keys)
-    pydirectinput.keyDown(key)
-    time.sleep(0.05)
-    pydirectinput.keyUp(key)
-    logger.info(f"用户闲置中，模拟按键: {key}")
+    selected_keys = random.choices(keys, k=random.randint(1, len(keys)))
+
+    for key in selected_keys:
+        pydirectinput.keyDown(key)
+        time.sleep(0.05)
+        pydirectinput.keyUp(key)
+        logger.info(f"用户闲置中，模拟按键: {key}")
+        time.sleep(0.05)
 
 
 def find_and_click_template(template_path: str, confidence: float) -> bool:
@@ -63,7 +66,8 @@ def find_and_click_template(template_path: str, confidence: float) -> bool:
     try:
         for s in candidate_scales:
             img = base_img if abs(s - 1.0) < 0.03 else base_img.resize(
-                (max(1, int(base_img.width * s)), max(1, int(base_img.height * s))),
+                (max(1, int(base_img.width * s)),
+                 max(1, int(base_img.height * s))),
                 Image.LANCZOS,
             )
             logger.debug(f"尝试匹配：缩放系数 {s:.2f}，confidence={confidence}")
@@ -83,7 +87,8 @@ def find_and_click_template(template_path: str, confidence: float) -> bool:
         try:
             for s in candidate_scales:
                 img = base_img if abs(s - 1.0) < 0.03 else base_img.resize(
-                    (max(1, int(base_img.width * s)), max(1, int(base_img.height * s))),
+                    (max(1, int(base_img.width * s)),
+                     max(1, int(base_img.height * s))),
                     Image.LANCZOS,
                 )
                 logger.debug(f"回退精确匹配：缩放系数 {s:.2f}")
