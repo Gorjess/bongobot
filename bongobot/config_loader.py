@@ -38,12 +38,19 @@ def load_config(path: str | None = None) -> Dict[str, Any]:
             break
 
     if not cfg_path:
-        example_path = (Path(__file__).resolve().parent.parent / "examples" / "config.example.yaml")
+        base_dir = Path(getattr(sys, "_MEIPASS", Path(__file__).resolve().parent.parent))
+        example_path = base_dir / "examples" / "config.example.yaml"
         target_path = Path.cwd() / "config.yaml"
         if example_path.exists():
             try:
                 shutil.copyfile(example_path, target_path)
                 print(f"首次运行：已从示例复制默认配置到 {target_path}")
+                # 如存在打包内置的 assets，则在首次初始化时一并复制到工作目录
+                bundled_assets = base_dir / "assets"
+                cwd_assets = Path.cwd() / "assets"
+                if bundled_assets.exists() and not cwd_assets.exists():
+                    shutil.copytree(bundled_assets, cwd_assets)
+                    print(f"已复制资源目录到 {cwd_assets}")
                 cfg_path = target_path
             except Exception as copy_err:
                 print("错误: 未找到配置文件且复制示例配置失败。")
