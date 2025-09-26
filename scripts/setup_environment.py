@@ -173,9 +173,10 @@ def print_usage_instructions() -> None:
     print("=" * 50)
     print("\n📋 使用说明:")
     print(f"1. 激活虚拟环境: {activation_cmd}")
-    print("2. 运行程序: bongobot")
-    print("3. 或者: python -m bongobot")
-    print("4. 退出虚拟环境: deactivate")
+    print("2. 安装bongobot包: python -m pip install -e .")
+    print("3. 运行程序: bongobot")
+    print("4. 或者: python -m bongobot")
+    print("5. 退出虚拟环境: deactivate")
     print("\n💡 提示: 每次使用前都需要先激活虚拟环境")
 
 
